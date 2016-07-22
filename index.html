@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>Basic ReactJS - Filtered Item</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+		
+        <script src="build/react.js"></script>
+		<script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+		<script src="build/react-dom.js"></script>
+		
+		<style>
+			body {
+				padding-top: 50px;
+			}
+			#searchResult{
+				background-color: green;
+			}
+			.affix{
+				right: 0px;
+			}
+			.affix-top{
+				right: 0px;
+				position: fixed;
+			}
+		</style>
+		
+    </head>
+    <body>
+        <div id="content" class="text-center"></div>
+        <script type="text/jsx">
+            
+			var FilteredList = React.createClass({
+			  filterList: function(event){
+				var updatedList = this.state.initialItems;
+				updatedList = updatedList.filter(function(item){
+				  return item.toLowerCase().search(
+					event.target.value.toLowerCase()) !== -1;
+				});
+				this.setState({items: updatedList});
+			  },
+			  getInitialState: function(){
+				 return {
+				   initialItems: [
+					 "Apples",
+					 "Broccoli",
+					 "Chicken",
+					 "Duck",
+					 "Eggs",
+					 "Fish",
+					 "Granola",
+					 "Hash Browns"
+				   ],
+				   items: []
+				 }
+			  },
+			  componentWillMount: function(){
+				this.setState({items: this.state.initialItems})
+			  },
+			  render: function(){
+				return (
+				  <div className="filter-list">
+				    <h1 align="center">Filtered Item</h1>
+					
+					<hr />
+					
+					<div className="container">
+						<div id="name-group" class="form-group">
+							<input type="text" className="form-control" placeholder="Filter..." onChange={this.filterList} /><br/>
+						</div>
+					</div>
+					
+					<List items={this.state.items}/>
+				  </div>
+				);
+			  }
+			});
+
+			var List = React.createClass({
+			  render: function(){
+				return (
+					<div className="rows">
+						<div className="col-md-12">
+								
+							<div className="panel panel-primary">
+								<div id="searchResult" class="panel-heading">
+									<h3 className="panel-title" align="center">Search result</h3>
+								</div>
+								<div className="panel-body">
+										
+									<ul>
+										{
+											this.props.items.map(function(item) {
+												return <li key={item}>{item}</li>		
+											})
+										}
+									</ul>
+					  
+								</div>
+							</div>
+										
+						</div>
+					</div>
+				)  
+			  }
+			});
+
+			ReactDOM.render(<FilteredList/>, document.getElementById('content'));
+
+        </script>
+    </body>
+</html>
